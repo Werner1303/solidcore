@@ -244,7 +244,9 @@ impl OdeIntegrator {
         if !owed_within_accuracy(&run.owed, &run.size, options.accuracy) {
             return Err(SolidError::sm_err(OP_STEP_CONTROL));
         }
-        initial.copy_from_slice(&run.values);
+        for (slot, value) in initial.iter_mut().zip(&run.values) {
+            *slot = *value;
+        }
         Ok(run.counts)
     }
 
